@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>MovCat - Расширенный поиск</title>
+</head>
+<body class="d-flex flex-column" style="min-height: 100vh;">
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" alt="">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Фильмы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Сериалы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Мультфильмы</a>
+                        </li>
+                    </ul>
+
+                    <form class="form-inline my-2 my-lg-0">
+                        <div class="input-group">
+                            <input class="form-control" name="headerSearchName" type="search" placeholder="Что ищем?" aria-label="Search">
+                            <div class="input-group-append">
+                                <select class="custom-select" name="headerSearchCategory">
+                                    <option value="0" selected>Все</option>
+                                    <option value="1">Фильмы</option>
+                                    <option value="2">Сериалы</option>
+                                    <option value="3">Мультфильмы</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary my-2 my-sm-0 ml-sm-3" type="submit">Поиск</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pb-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Расширенный поиск</li>
+                </ol>
+            </nav>
+
+            <form action="" class="row">
+                <div class="col-md-6">
+                    <!--    Категория-->
+                    <div class="row form-group">
+                        <label for="category" class="col-md-4">Категория</label>
+                        <div class="col-md-8">
+                            <select name="category" id="category" class="form-control">
+                                <option value="movie">Фильмы</option>
+                                <option value="serial">Сериалы</option>
+                                <option value="cartoon">Мультфильмы</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--    Страна-->
+                    <div class="row form-group">
+                        <label for="country" class="col-md-4">Страна</label>
+                        <div class="col-md-8">
+                            <select name="country" id="country" class="form-control">
+                                <option value="russia">Россия</option>
+                                <option value="usa">США</option>
+                                <option value="germany">Германия</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--    Возраст-->
+                    <div class="row form-group">
+                        <label for="age-rating" class="col-md-4">Возрастной рейтинг</label>
+                        <div class="col-md-8">
+                            <select name="ageRating" id="age-rating" class="form-control">
+                                <option value="0">0+</option>
+                                <option value="1">6+</option>
+                                <option value="2">14+</option>
+                                <option value="3">18+</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--    Жанр-->
+                    <div class="row form-group">
+                        <label for="genre" class="col-md-4">Жанр</label>
+                        <div class="col-md-8">
+                            <select name="genre" id="genre" class="form-control">
+                                <option value="1">Аниме</option>
+                                <option value="2">Боевик</option>
+                                <option value="3">Вестерн</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--    Рейтинг iMDB-->
+                    <div class="row form-group">
+                        <label for="rating" class="col-md-4">Рейтинг</label>
+                        <div class="col-md-8">
+                            <select name="rating" id="rating" class="form-control">
+                                <option value="1">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!--    Год выпуска-->
+                    <div class="row form-group">
+                        <label for="year-from" class="col-md-4">Год выпуска</label>
+                        <div class="col-md-8 d-flex justify-content-between">
+                            <label for="year-from" class="mx-2">с</label>
+                            <select name="yearFrom" id="year-from" class="form-control">
+                                <option value="1980">1980</option>
+                                <option value="1981">1981</option>
+                                <option value="1982">1982</option>
+                                <option value="1983">1983</option>
+                            </select>
+                            <label for="year-to" class="mx-2">по</label>
+                            <select name="yearTo" id="year-to" class="form-control">
+                                <option value="1980">1980</option>
+                                <option value="1981">1981</option>
+                                <option value="1982">1982</option>
+                                <option value="1983" selected>1983</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--    Название-->
+                    <div class="row form-group">
+                        <label for="name" class="col-md-4">Название</label>
+                        <div class="col-md-8">
+                            <input type="text" name="name" class="form-control" id="name">
+                        </div>
+                    </div>
+
+                    <!--    Актер-->
+                    <div class="row form-group">
+                        <label for="actor" class="col-md-4">Актер</label>
+                        <div class="col-md-8">
+                            <input type="text" name="actor" class="form-control" id="actor">
+                        </div>
+                    </div>
+
+                    <!--    Режиссер-->
+                    <div class="row form-group">
+                        <label for="directed-by" class="col-md-4">Режиссер</label>
+                        <div class="col-md-8">
+                            <input type="text" name="directedBy" class="form-control" id="directed-by">
+                        </div>
+                    </div>
+
+                    <!--    Найти-->
+                    <div class="row form-group">
+                        <div class="col-md-8 offset-md-4">
+                            <input type="button" class="btn btn-primary" value="Найти">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="search-result movie-list">
+                <hr>
+
+                <div class="movie row mb-4">
+                    <a href="#" class="movie-poster col-md-2">
+                        <img src="img/movie_poster_small.jpg" alt="" class="img-fluid">
+                    </a>
+                    <div class="movie-about col-md-10 d-flex flex-column">
+                        <h6 class="movie-name">Человек будущего</h6>
+                        <small class="text-muted">2019, США, Драма, 01:35:18 мин.</small>
+                        <p class="plot-content my-3">Любви все возрасты покорны. Эд переживает о будущем и готовится к концу света, а Ронни не может забыть прошлое. Но вместе они смогут вспомнить, что значит жить настоящим.</p>
+
+                        <div class="row mt-auto">
+                            <dl class="col-md-6 mb-0">
+                                <dt>Режиссер</dt>
+                                <dd>Ноубл Линкольн Джонс</dd>
+                            </dl>
+                            <dl class="col-md-6 mb-0">
+                                <dt>Рейтинги</dt>
+                                <dd>IMDb: <span class="text-muted">5.5 (538)</span></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div> <!-- /.movie -->
+            </div> <!-- /.search-result -->
+
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-light mt-auto">
+        <div class="container">
+            <div class="py-3">&copy; Movie Catalog 2019</div>
+        </div>
+    </footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
