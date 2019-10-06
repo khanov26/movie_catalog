@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -26,6 +27,10 @@ use yii\db\ActiveRecord;
  */
 class Movie extends ActiveRecord
 {
+    const CATEGORY_MOVIE = 1;
+    const CATEGORY_SERIAL = 2;
+    const CATEGORY_CARTOON = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -99,5 +104,21 @@ class Movie extends ActiveRecord
     public function getGenres()
     {
         return $this->hasMany(Genre::className(), ['id' => 'genre_id'])->viaTable('movie_genre', ['movie_id' => 'id']);
+    }
+
+    public function getPoster()
+    {
+        $posterUri = $this->poster;
+
+        return Yii::$app->params['imgUri'] . $posterUri;
+    }
+
+    public function getFormattedDuration(): string
+    {
+        $hours = floor($this->duration / 3600);
+        $minutes = floor($this->duration / 60 % 60);
+        $seconds = floor($this->duration % 60);
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 }
