@@ -13,6 +13,11 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -43,6 +48,14 @@ $config = [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+        ],
+        'assetManager' => [
+            'linkAssets' => YII_ENV_DEV,
+        ],
+        'storage' => [
+            'class' => 'app\components\Storage',
+            'storagePath' => '@webroot/img',
+            'storageUri' => '@web/img',
         ],
         'db' => $db,
         'urlManager' => [

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\db\ActiveRecord;
 
 /**
@@ -19,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $poster
  * @property string $poster_small
  * @property double $imdb_rating
+ * @property int $category
  *
  * @property Producer $producer
  * @property Actor[] $actors
@@ -30,6 +32,15 @@ class Movie extends ActiveRecord
     const CATEGORY_MOVIE = 1;
     const CATEGORY_SERIAL = 2;
     const CATEGORY_CARTOON = 3;
+
+    const CATEGORY_LABELS = [
+        self::CATEGORY_MOVIE => 'Фильм',
+        self::CATEGORY_SERIAL => 'Сериал',
+        self::CATEGORY_CARTOON => 'Мультфильм',
+    ];
+
+    const POSTER_SIZE_MEDIUM = 1;
+    const POSTER_SIZE_SMALL = 2;
 
     /**
      * {@inheritdoc}
@@ -45,12 +56,8 @@ class Movie extends ActiveRecord
     public function rules()
     {
         return [
-            [['year', 'producer_id', 'duration', 'age_rating'], 'integer'],
-            [['plot'], 'string'],
-            [['imdb_rating'], 'number'],
-            [['name', 'original_name'], 'string', 'max' => 200],
-            [['poster', 'poster_small'], 'string', 'max' => 255],
-            [['producer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Producer::className(), 'targetAttribute' => ['producer_id' => 'id']],
+            ['category', 'default', 'value' => self::CATEGORY_MOVIE],
+            ['category', 'in', 'range' => [self::CATEGORY_MOVIE, self::CATEGORY_SERIAL, self::CATEGORY_CARTOON]],
         ];
     }
 
@@ -61,16 +68,16 @@ class Movie extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'original_name' => 'Original Name',
-            'year' => 'Year',
-            'producer_id' => 'Producer ID',
-            'duration' => 'Duration',
-            'age_rating' => 'Age Rating',
-            'plot' => 'Plot',
-            'poster' => 'Poster',
+            'name' => 'Название (рус)',
+            'original_name' => 'Название (оригинал)',
+            'year' => 'Год выпуска',
+            'producer_id' => 'Режиссер',
+            'duration' => 'Продолжительность',
+            'age_rating' => 'Возраст',
+            'plot' => 'Сюжет',
+            'poster' => 'Постер',
             'poster_small' => 'Poster Small',
-            'imdb_rating' => 'Imdb Rating',
+            'imdb_rating' => 'Рейтинг Imdb',
         ];
     }
 
@@ -106,11 +113,11 @@ class Movie extends ActiveRecord
         return $this->hasMany(Genre::className(), ['id' => 'genre_id'])->viaTable('movie_genre', ['movie_id' => 'id']);
     }
 
-    public function getPoster()
+    public function getPoster(int $posterSize = self::POSTER_SIZE_MEDIUM): string
     {
-        $posterUri = $this->poster;
+        $posterUri = $posterSize === self::POSTER_SIZE_SMALL ? $this->poster_small : $this->poster;
 
-        return Yii::$app->params['imgUri'] . $posterUri;
+        return Yii::$app->storage->getFileUri($posterUri);
     }
 
     public function getFormattedDuration(): string
@@ -120,5 +127,15 @@ class Movie extends ActiveRecord
         $seconds = floor($this->duration % 60);
 
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+
+    public function setDuration(string $formattedDuration)
+    {
+        $n = sscanf($formattedDuration, '%02d:%02d:%02d', $hours, $minutes, $seconds);
+        if ($n !== 3) {
+            throw new InvalidArgumentException('Incorrect duration format');
+        }
+
+        $this->duration = $hours * 3600 + $minutes * 60 + $seconds;
     }
 }

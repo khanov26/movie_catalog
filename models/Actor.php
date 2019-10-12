@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\traits\ActiveRecordToStringTrait;
 use yii\db\ActiveRecord;
 
 /**
@@ -14,6 +15,8 @@ use yii\db\ActiveRecord;
  */
 class Actor extends ActiveRecord
 {
+    use ActiveRecordToStringTrait;
+
     /**
      * {@inheritdoc}
      */
