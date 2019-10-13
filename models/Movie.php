@@ -4,7 +4,9 @@ namespace app\models;
 
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\base\ModelEvent;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "movie".
@@ -48,6 +50,24 @@ class Movie extends ActiveRecord
     public static function tableName()
     {
         return 'movie';
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        $this->on(self::EVENT_BEFORE_INSERT, [$this, 'isDuplicate']);
+    }
+
+    public function isDuplicate(ModelEvent $event)
+    {
+        if (self::find()
+            ->where(['name' => $this->name, 'original_name' => $this->original_name, 'year' => $this->year])
+            ->exists()) {
+            $event->isValid = false;
+            Yii::error("Movie '{$this->name}' already exists", __METHOD__);
+            throw new Exception('Trying to create a duplicate');
+        }
     }
 
     /**

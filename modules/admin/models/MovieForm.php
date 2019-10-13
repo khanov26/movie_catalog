@@ -124,9 +124,11 @@ abstract class MovieForm extends Model
                 $movie->category = $this->category;
 
                 Image::resize($this->poster->tempName, 380, null)->save();
-                $movie->poster = Yii::$app->storage->saveFile($this->poster, false);
+                $poster = Yii::$app->storage->saveFile($this->poster, false);
+                $movie->poster = $poster;
                 Image::resize($this->poster->tempName, 160, null)->save();
-                $movie->poster_small = Yii::$app->storage->saveFile($this->poster);
+                $posterSmall = Yii::$app->storage->saveFile($this->poster);
+                $movie->poster_small = $posterSmall;
 
                 $this->linkModels($movie, 'producer', $producer);
                 $this->linkModels($movie, 'genres', $genres);
@@ -138,6 +140,13 @@ abstract class MovieForm extends Model
                 return true;
             } catch (\Throwable $e) {
                 $transaction->rollBack();
+
+                if (isset($poster, $posterSmall)) {
+                    // delete new uploaded poster files
+                    Yii::$app->storage->deleteFile($poster);
+                    Yii::$app->storage->deleteFile($posterSmall);
+                }
+
                 Yii::error($e->getMessage(), __METHOD__);
                 return false;
             }
