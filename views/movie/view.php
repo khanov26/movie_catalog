@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $movie->name;
                     </dd>
 
                     <dt class="col-sm-4">Режиссер</dt>
-                    <dd class="col-sm-8"><?= Html::a($movie->producer->name, '#') ?></dd>
+                    <dd class="col-sm-8"><?= Html::a($movie->producer->name, ['/producer/movie-list', 'id' => $movie->producer_id]) ?></dd>
 
                     <dt class="col-sm-4 text-truncate">Страна</dt>
                     <dd class="col-sm-8">

@@ -79,13 +79,11 @@ class MovieController extends Controller
             }
         }
 
-        $producers = Producer::find()->select('name')->asArray()->column();
         $genres = Genre::find()->select('name')->asArray()->column();
         $countries = Country::find()->select('name')->asArray()->column();
 
         return $this->render('create', [
             'model' => $model,
-            'producers' => $producers,
             'genres' => $genres,
             'countries' => $countries,
         ]);
@@ -112,13 +110,11 @@ class MovieController extends Controller
 
         $model->loadData();
 
-        $producers = Producer::find()->select('name')->asArray()->column();
         $genres = Genre::find()->select('name')->asArray()->column();
         $countries = Country::find()->select('name')->asArray()->column();
 
         return $this->render('update', [
             'model' => $model,
-            'producers' => $producers,
             'genres' => $genres,
             'countries' => $countries,
         ]);

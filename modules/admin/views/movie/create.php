@@ -5,7 +5,6 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\admin\models\MovieForm */
-/* @var $producers array */
 /* @var $genres array */
 /* @var $countries array */
 
@@ -23,7 +22,6 @@ MovieAsset::register($this);
 
     <?= $this->render('_form', [
         'model' => $model,
-        'producers' => $producers,
         'genres' => $genres,
         'countries' => $countries,
     ]) ?>

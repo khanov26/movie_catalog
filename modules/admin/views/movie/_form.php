@@ -10,7 +10,6 @@ use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\admin\models\MovieForm */
-/* @var $producers array */
 /* @var $genres array */
 /* @var $countries array */
 
@@ -45,7 +44,7 @@ use yii\web\JsExpression;
 
             <?= $form->field($model, 'producer')->widget(AutoComplete::class, [
                 'clientOptions' => [
-                    'source' => $producers,
+                    'source' => '/producer/search',
                     'minLength' => 3,
                 ],
             ])->textInput() ?>

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="movie-list">
     <?php foreach ($movies as $movie): ?>
         <div class="movie row mb-4">
-            <a href="<?= Url::to(['view', 'id' => $movie->id]) ?>" class="movie-poster col-md-2">
+            <a href="<?= Url::to(['/movie/view', 'id' => $movie->id]) ?>" class="movie-poster col-md-2">
                 <img src="<?= $movie->getPoster(Movie::POSTER_SIZE_SMALL) ?>" alt="" class="img-fluid">
             </a>
             <div class="movie-about col-md-10 d-flex flex-column">

@@ -3,9 +3,9 @@
 namespace app\controllers;
 
 use app\models\Movie;
+use Yii;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
-use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -28,7 +28,7 @@ class MovieController extends Controller
     {
         $categoryLabel = ArrayHelper::getValue(Movie::CATEGORY_LABELS, [$category, 'plural']);
         if ($categoryLabel === null) {
-            throw new BadRequestHttpException();
+            throw new NotFoundHttpException();
         }
 
         $query = Movie::find()
@@ -39,11 +39,11 @@ class MovieController extends Controller
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
-            'defaultPageSize' => 5, // чтобы убрать per-page параметр из url
+            'pageSize' => Yii::$app->params['moviesPerPage'],
+            'defaultPageSize' => Yii::$app->params['moviesPerPage'], // чтобы убрать per-page параметр из url
         ]);
 
-        $movies = $countQuery
+        $movies = $query
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
