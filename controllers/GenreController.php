@@ -34,6 +34,7 @@ class GenreController extends Controller
 
         $movies = $query
             ->with('genres', 'countries', 'producer')
+            ->orderBy(['year' => SORT_DESC])
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
