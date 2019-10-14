@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $movie->name;
                     <dd class="col-sm-8">
                         <?php
                         $genreLinks = array_map(static function ($genre) {
-                            return Html::a($genre->name, '#');
+                            return Html::a($genre->name, ['/genre/movie-list', 'id' => $genre->id]);
                         }, $movie->genres);
                         echo implode(', ', $genreLinks);
                         ?>
