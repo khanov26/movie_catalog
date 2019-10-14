@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $movie->name;
             <div class="tab-pane fade" id="actors" role="tabpanel" aria-labelledby="profile-tab">
                 <?php
                 $actors = array_map(static function ($actor) {
-                    return Html::a($actor->name, '#', ['class' => 'clearfix']);
+                    return Html::a($actor->name, ['/actor/movie-list', 'id' => $actor->id], ['class' => 'clearfix']);
                 }, $movie->actors);
                 echo implode('', $actors);
                 ?>

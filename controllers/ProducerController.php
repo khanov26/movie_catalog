@@ -32,12 +32,12 @@ class ProducerController extends Controller
      */
     public function actionMovieList(int $id)
     {
-        $producer = Producer::findOne(['id' => $id]);
-        if ($producer === null) {
+        $model = Producer::findOne(['id' => $id]);
+        if ($model === null) {
             throw new NotFoundHttpException();
         }
 
-        $query = $producer->getMovies();
+        $query = $model->getMovies();
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
@@ -53,7 +53,7 @@ class ProducerController extends Controller
 
         return $this->render('/movie/list', [
             'movies' => $movies,
-            'categoryLabel' => $producer->name,
+            'categoryLabel' => $model->name,
             'pages' => $pages,
         ]);
     }

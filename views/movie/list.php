@@ -10,8 +10,8 @@ use yii\helpers\Url;
 /** @var string $categoryLabel */
 /** @var \yii\data\Pagination $pages */
 
-$this->title = $categoryLabel;
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::$app->name . ' - ' . $categoryLabel;
+$this->params['breadcrumbs'][] = $categoryLabel;
 
 ?>
 
