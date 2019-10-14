@@ -6,7 +6,10 @@
 use app\models\Movie;use yii\helpers\Html;
 
 $this->title = Yii::$app->name . ' - ' . $movie->name;
-$this->params['breadcrumbs'][] = ['label' => 'Фильмы', 'url' => ['list', 'category' => Movie::CATEGORY_MOVIE]];
+$this->params['breadcrumbs'][] = [
+    'label' => Movie::CATEGORY_LABELS[$movie->category]['plural'],
+    'url' => ['list', 'category' => $movie->category]
+];
 $this->params['breadcrumbs'][] = $movie->name;
 
 ?>

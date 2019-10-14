@@ -2,6 +2,7 @@
 
 use app\models\Movie;
 use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\jui\AutoComplete;
@@ -38,7 +39,7 @@ use yii\web\JsExpression;
 
             <?= $form->field($model, 'originalName')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'category')->dropDownList(Movie::CATEGORY_LABELS) ?>
+            <?= $form->field($model, 'category')->dropDownList(ArrayHelper::getColumn(Movie::CATEGORY_LABELS, 'single')) ?>
 
             <?= $form->field($model, 'year')->textInput() ?>
 

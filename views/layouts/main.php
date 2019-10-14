@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\assets\AppAsset;
+use app\models\Movie;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Html;
 
@@ -35,18 +36,14 @@ AppAsset::register($this);
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Главная</a>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Фильмы</a>
+                            <a class="nav-link" href="/">Главная</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Сериалы</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Мультфильмы</a>
-                        </li>
+                        <?php foreach (Movie::CATEGORY_LABELS as $category => $element): ?>
+                            <li class="nav-item">
+                                <?= Html::a($element['plural'], ['/movie/list', 'category' => $category], ['class' => 'nav-link']) ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
 
                     <form class="form-inline my-2 my-lg-0">
@@ -55,9 +52,9 @@ AppAsset::register($this);
                             <div class="input-group-append">
                                 <select class="custom-select" name="headerSearchCategory">
                                     <option value="0" selected>Все</option>
-                                    <option value="1">Фильмы</option>
-                                    <option value="2">Сериалы</option>
-                                    <option value="3">Мультфильмы</option>
+                                    <?php foreach (Movie::CATEGORY_LABELS as $category => $element): ?>
+                                        <option value="<?= $category ?>"><?= $element['plural'] ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>

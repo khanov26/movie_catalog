@@ -36,9 +36,9 @@ class Movie extends ActiveRecord
     const CATEGORY_CARTOON = 3;
 
     const CATEGORY_LABELS = [
-        self::CATEGORY_MOVIE => 'Фильм',
-        self::CATEGORY_SERIAL => 'Сериал',
-        self::CATEGORY_CARTOON => 'Мультфильм',
+        self::CATEGORY_MOVIE => ['single' => 'Фильм', 'plural' => 'Фильмы'],
+        self::CATEGORY_SERIAL => ['single' => 'Сериал', 'plural' => 'Сериалы'],
+        self::CATEGORY_CARTOON => ['single' => 'Мультфильм', 'plural' => 'Мультфильмы'],
     ];
 
     const POSTER_SIZE_MEDIUM = 1;
