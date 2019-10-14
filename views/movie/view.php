@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $movie->name;
                     <dd class="col-sm-8">
                         <?php
                         $countryLinks = array_map(static function ($country) {
-                            return Html::a($country->name, '#');
+                            return Html::a($country->name, ['/country/movie-list', 'id' => $country->id]);
                         }, $movie->countries);
                         echo implode(', ', $countryLinks);
                         ?>
