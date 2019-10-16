@@ -25,6 +25,11 @@ $config = [
                 ],
             ],
         ],
+        'storage' => [
+            'class' => 'app\components\Storage',
+            'storagePath' => '@app/web/img',
+            'storageUri' => '/img',
+        ],
         'db' => $db,
     ],
     'params' => $params,

@@ -124,11 +124,14 @@ abstract class MovieForm extends Model
                 $movie->category = $this->category;
 
                 Image::resize($this->poster->tempName, 380, null)->save();
-                $poster = Yii::$app->storage->saveFile($this->poster, false);
+                $poster = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension, false);
                 $movie->poster = $poster;
                 Image::resize($this->poster->tempName, 160, null)->save();
-                $posterSmall = Yii::$app->storage->saveFile($this->poster);
+                $posterSmall = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension, false);
                 $movie->poster_small = $posterSmall;
+                Image::resize($this->poster->tempName, null, 45)->save();
+                $posterExtraSmall = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension);
+                $movie->poster_extra_small = $posterExtraSmall;
 
                 $this->linkModels($movie, 'producer', $producer);
                 $this->linkModels($movie, 'genres', $genres);

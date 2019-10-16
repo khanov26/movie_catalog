@@ -51,13 +51,17 @@ class UpdateMovieForm extends MovieForm
                 if ($this->poster !== null) {
                     $oldPoster = $this->movie->poster;
                     $oldPosterSmall = $this->movie->poster_small;
+                    $oldPosterExtraSmall = $this->movie->poster_extra_small;
 
                     Image::resize($this->poster->tempName, 380, null)->save();
-                    $newPoster = Yii::$app->storage->saveFile($this->poster, false);
+                    $newPoster = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension, false);
                     $this->movie->poster = $newPoster;
                     Image::resize($this->poster->tempName, 160, null)->save();
-                    $newPosterSmall = Yii::$app->storage->saveFile($this->poster);
+                    $newPosterSmall = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension, false);
                     $this->movie->poster_small = $newPosterSmall;
+                    Image::resize($this->poster->tempName, null, 45)->save();
+                    $newPosterExtraSmall = Yii::$app->storage->saveFile($this->poster->tempName, $this->poster->extension);
+                    $this->movie->poster_extra_small = $newPosterExtraSmall;
                 }
 
                 $this->movie->save();
@@ -89,10 +93,11 @@ class UpdateMovieForm extends MovieForm
                 $this->linkModels($this->movie, 'actors', $actorsToBeLinked);
                 $this->unlinkModels($this->movie, 'actors', $actorsToBeUnlinked);
 
-                if (isset($oldPoster, $oldPosterSmall)) {
+                if (isset($oldPoster, $oldPosterSmall, $oldPosterExtraSmall)) {
                     //delete old poster files
                     Yii::$app->storage->deleteFile($oldPoster);
                     Yii::$app->storage->deleteFile($oldPosterSmall);
+                    Yii::$app->storage->deleteFile($oldPosterExtraSmall);
                 }
 
                 $transaction->commit();
@@ -101,10 +106,11 @@ class UpdateMovieForm extends MovieForm
             } catch (\Throwable $e) {
                 $transaction->rollBack();
 
-                if (isset($newPoster, $newPosterSmall)) {
+                if (isset($newPoster, $newPosterSmall, $newPosterExtraSmall)) {
                     // delete new uploaded poster files
                     Yii::$app->storage->deleteFile($newPoster);
                     Yii::$app->storage->deleteFile($newPosterSmall);
+                    Yii::$app->storage->deleteFile($newPosterExtraSmall);
                 }
 
                 Yii::error($e->getMessage(), __METHOD__);

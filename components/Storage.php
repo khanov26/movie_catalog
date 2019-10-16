@@ -33,17 +33,15 @@ class Storage extends Component
      * Генерирует название файла и сохраняет его в локальное хранилище. Бросается исключение,
      * если не удалось сохранить файл или файл уже существует. Возвращает сгенерированоое имя файла.
      *
-     * @param UploadedFile $file
+     * @param string $tempFileName
+     * @param string $targetExtension
      * @param bool $deleteTempFile
      * @return string
      * @throws Exception
      */
-    public function saveFile(UploadedFile $file, $deleteTempFile = true): string
+    public function saveFile(string $tempFileName, string $targetExtension, bool $deleteTempFile = true): string
     {
-        $hash = md5_file($file->tempName);
-        $fileName = substr_replace($hash, '/', 6, 0);
-        $fileName = substr_replace($fileName, '/', 3, 0);
-        $fileName .= '.' . $file->extension;
+        $fileName = $this->generateFileName($tempFileName, $targetExtension);
 
         $fileFullPath = $this->getFileFullPath($fileName);
         $fileFullPath = FileHelper::normalizePath($fileFullPath);
@@ -54,7 +52,10 @@ class Storage extends Component
 
         FileHelper::createDirectory(dirname($fileFullPath));
 
-        if ($file->saveAs($fileFullPath, $deleteTempFile)) {
+        if (copy($tempFileName, $fileFullPath)) {
+            if ($deleteTempFile && !unlink($tempFileName)) {
+                Yii::warning("Cannot delete temp file $tempFileName", __METHOD__);
+            }
             Yii::info("File $fileFullPath saved", __METHOD__);
             return $fileName;
         }
@@ -80,6 +81,23 @@ class Storage extends Component
         }
         Yii::warning("File $fileFullPath does not exist", __METHOD__);
         return true;
+    }
+
+    /**
+     * Генерирует имя файла на основе md5 хэша временного файла
+     *
+     * @param string $tempFileName
+     * @param string $targetExtension
+     * @return string
+     */
+    public function generateFileName(string $tempFileName, string $targetExtension): string
+    {
+        $hash = md5_file($tempFileName);
+        $fileName = substr_replace($hash, '/', 6, 0);
+        $fileName = substr_replace($fileName, '/', 3, 0);
+        $fileName .= '.' . $targetExtension;
+
+        return $fileName;
     }
 
     /**

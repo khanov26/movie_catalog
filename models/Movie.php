@@ -21,6 +21,7 @@ use yii\db\Exception;
  * @property string $plot
  * @property string $poster
  * @property string $poster_small
+ * @property string $poster_extra_small
  * @property double $imdb_rating
  * @property int $category
  *
@@ -43,6 +44,7 @@ class Movie extends ActiveRecord
 
     const POSTER_SIZE_MEDIUM = 1;
     const POSTER_SIZE_SMALL = 2;
+    const POSTER_SIZE_EXTRA_SMALL = 3;
 
     /**
      * {@inheritdoc}
@@ -135,7 +137,16 @@ class Movie extends ActiveRecord
 
     public function getPoster(int $posterSize = self::POSTER_SIZE_MEDIUM): string
     {
-        $posterUri = $posterSize === self::POSTER_SIZE_SMALL ? $this->poster_small : $this->poster;
+        switch ($posterSize) {
+            case self::POSTER_SIZE_SMALL:
+                $posterUri = $this->poster_small;
+                break;
+            case self::POSTER_SIZE_EXTRA_SMALL:
+                $posterUri = $this->poster_extra_small;
+                break;
+            default:
+                $posterUri = $this->poster;
+        }
 
         return Yii::$app->storage->getFileUri($posterUri);
     }

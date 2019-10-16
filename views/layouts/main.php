@@ -6,7 +6,7 @@
 use app\assets\AppAsset;
 use app\models\Movie;
 use yii\bootstrap4\Breadcrumbs;
-use yii\helpers\Html;
+use yii\bootstrap4\Html;
 
 AppAsset::register($this);
 ?>
@@ -46,9 +46,9 @@ AppAsset::register($this);
                         <?php endforeach; ?>
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0">
+                    <?= Html::beginForm(['/search'], 'post', ['class' => 'form-inline my-2 my-lg-0']) ?>
                         <div class="input-group">
-                            <input class="form-control" name="headerSearchName" type="search" placeholder="Что ищем?" aria-label="Search">
+                            <input id="header-search-name" class="form-control" name="headerSearchName" type="search" placeholder="Что ищем?" aria-label="Search">
                             <div class="input-group-append">
                                 <select class="custom-select" name="headerSearchCategory">
                                     <option value="0" selected>Все</option>
@@ -59,7 +59,7 @@ AppAsset::register($this);
                             </div>
                         </div>
                         <button class="btn btn-outline-primary my-2 my-sm-0 ml-sm-3" type="submit">Поиск</button>
-                    </form>
+                    <?= Html::endForm() ?>
                 </div>
             </nav>
         </div>

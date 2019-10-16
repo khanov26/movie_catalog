@@ -1,0 +1,7 @@
+.header-search-result-item {
+    width: 395px;
+}
+
+.header-search-result-item.ui-state-active {
+    background: rgba(255, 193, 7, 0.5);
+}
