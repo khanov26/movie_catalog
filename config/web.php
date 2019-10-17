@@ -8,6 +8,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'name' => 'MovCat',
     'language' => 'ru',
+    'defaultRoute' => 'movie',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

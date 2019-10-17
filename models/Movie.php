@@ -79,7 +79,7 @@ class Movie extends ActiveRecord
     {
         return [
             ['category', 'default', 'value' => self::CATEGORY_MOVIE],
-            ['category', 'in', 'range' => [self::CATEGORY_MOVIE, self::CATEGORY_SERIAL, self::CATEGORY_CARTOON]],
+            ['category', 'in', 'range' => array_keys(self::CATEGORY_LABELS)],
         ];
     }
 

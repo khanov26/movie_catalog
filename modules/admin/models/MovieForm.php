@@ -96,7 +96,7 @@ abstract class MovieForm extends Model
 
             ['poster', 'file', 'extensions' => ['jpg', 'jpeg', 'png'], 'message' => 'Файл должен быть формата jpg или png'],
 
-            ['category', 'in', 'range' => [Movie::CATEGORY_MOVIE, Movie::CATEGORY_SERIAL, Movie::CATEGORY_CARTOON]],
+            ['category', 'in', 'range' => array_keys(Movie::CATEGORY_LABELS)],
 
             ['actors', 'each', 'rule' => ['trim']],
         ];

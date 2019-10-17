@@ -54,4 +54,23 @@ class MovieController extends Controller
             'pages' => $pages,
         ]);
     }
+
+    public function actionIndex()
+    {
+        $categories = array_keys(Movie::CATEGORY_LABELS);
+        $moviesArray = [];
+
+        foreach ($categories as $category) {
+            $moviesArray[$category] = Movie::find()
+                ->with('countries')
+                ->where(['category' => $category])
+                ->orderBy(['year' => SORT_DESC])
+                ->limit(20)
+                ->all();
+        }
+
+        return $this->render('index', [
+            'moviesArray' => $moviesArray,
+        ]);
+    }
 }
