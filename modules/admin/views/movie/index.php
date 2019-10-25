@@ -9,6 +9,7 @@ use yii\grid\GridView;
 
 $this->title = 'Фильмы';
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
 ?>
 <div class="movie-index">
 
@@ -27,36 +28,43 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name:text:Название (рус)',
             'original_name:text:Название (оригинал)',
+            [
+                'label' => 'Режиссер',
+                'attribute' => 'producer.name',
+            ],
 
             [
                 'attribute' => 'poster_small',
                 'format' => 'raw',
                 'label' => 'Постер',
-                'value' => function ($model, $key, $index, $column) {
+                'value' => static function ($model, $key, $index, $column) {
                     /** @var Movie $model */
-                    return Html::img($model->getPoster(Movie::POSTER_SIZE_SMALL), ['class' => 'img-fluid']);
+                    return Html::img($model->getPoster(Movie::POSTER_SIZE_EXTRA_SMALL), ['class' => 'img-fluid']);
                 }
             ],
-
+            'year',
+            [
+                'label' => 'Категория',
+                'value' => static function($model, $key, $index, $column) {
+                    return Movie::CATEGORY_LABELS[$model->category]['single'];
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        $title = Yii::t('yii', 'View');
-                        return Html::a($title, $url, [
-                            'class' => 'btn btn-primary',
+                    'view' => static function ($url, $model, $key) {
+                        return Html::a('<i class="fas fa-eye"></i>', $url, [
+                            'class' => 'text-primary',
                         ]);
                     },
-                    'update' => function ($url, $model, $key) {
-                        $title = Yii::t('yii', 'Update');
-                        return Html::a($title, $url, [
-                            'class' => 'btn btn-success',
+                    'update' => static function ($url, $model, $key) {
+                        return Html::a('<i class="fas fa-pencil-alt"></i>', $url, [
+                            'class' => 'text-success',
                         ]);
                     },
-                    'delete' => function ($url, $model, $key) {
-                        $title = Yii::t('yii', 'Delete');
-                        return Html::a($title, $url, [
-                            'class' => 'btn btn-danger',
+                    'delete' => static function ($url, $model, $key) {
+                        return Html::a('<i class="fas fa-trash-alt"></i>', $url, [
+                            'class' => 'text-danger',
                             'data' => [
                                 'confirm' => 'Уверены, что хотите удалить этот фильм?',
                                 'method' => 'post',
@@ -64,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                 ],
+                'template' => '{view}<br>{update}<br>{delete}',
             ],
         ],
     ]); ?>

@@ -42,7 +42,7 @@ class MovieController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Movie::find(),
+            'query' => Movie::find()->with('producer'),
         ]);
 
         return $this->render('index', [

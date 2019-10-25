@@ -33,9 +33,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'original_name',
+            [
+                'label' => 'Жанр',
+                'value' => static function($model, $widjet) {
+                    /** @var Movie $model */
+                    return implode(', ', array_column($model->genres, 'name'));
+                },
+            ],
             'year',
-            'producer_id',
-            'duration',
+            [
+                'label' => 'Режиссер',
+                'attribute' => 'producer.name',
+            ],
+            [
+                'label' => 'Продолжительность',
+                'value' => static function ($model, $widget) {
+                    /** @var Movie $model */
+                    return $model->getFormattedDuration();
+                }
+            ],
             'age_rating',
             'plot:ntext',
             [
@@ -48,7 +64,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'imdb_rating',
-            'category',
+            [
+                'label' => 'Категория',
+                'value' => static function($model, $widjet) {
+                    return Movie::CATEGORY_LABELS[$model->category]['single'];
+                },
+            ],
         ],
     ]) ?>
 
