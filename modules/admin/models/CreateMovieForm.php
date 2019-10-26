@@ -6,6 +6,6 @@ class CreateMovieForm extends MovieForm
 {
     public function rules()
     {
-        return array_merge(parent::rules(), ['poster', 'required']);
+        return array_merge(parent::rules(), [['poster', 'required']]);
     }
 }

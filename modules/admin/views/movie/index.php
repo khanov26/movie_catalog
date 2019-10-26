@@ -1,11 +1,13 @@
 <?php
 
 use app\models\Movie;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $searchModel \app\modules\admin\models\SearchMovie */
 
 $this->title = 'Фильмы';
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,16 +23,20 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
 
 
     <?= GridView::widget([
+        'filterModel' => $searchModel,
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name:text:Название (рус)',
-            'original_name:text:Название (оригинал)',
+            'name:text',
+            'original_name:text',
             [
                 'label' => 'Режиссер',
-                'attribute' => 'producer.name',
+                'attribute' => 'producerName',
+                'value' => static function($model) {
+                    return $model->producer->name;
+                },
             ],
 
             [
@@ -45,24 +51,26 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
             'year',
             [
                 'label' => 'Категория',
-                'value' => static function($model, $key, $index, $column) {
+                'attribute' => 'category',
+                'filter' => ArrayHelper::getColumn(Movie::CATEGORY_LABELS, 'single'),
+                'value' => static function($model) {
                     return Movie::CATEGORY_LABELS[$model->category]['single'];
                 },
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'view' => static function ($url, $model, $key) {
+                    'view' => static function ($url) {
                         return Html::a('<i class="fas fa-eye"></i>', $url, [
                             'class' => 'text-primary',
                         ]);
                     },
-                    'update' => static function ($url, $model, $key) {
+                    'update' => static function ($url) {
                         return Html::a('<i class="fas fa-pencil-alt"></i>', $url, [
                             'class' => 'text-success',
                         ]);
                     },
-                    'delete' => static function ($url, $model, $key) {
+                    'delete' => static function ($url) {
                         return Html::a('<i class="fas fa-trash-alt"></i>', $url, [
                             'class' => 'text-danger',
                             'data' => [
@@ -75,7 +83,5 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
                 'template' => '{view}<br>{update}<br>{delete}',
             ],
         ],
-    ]); ?>
-
-
+    ]) ?>
 </div>

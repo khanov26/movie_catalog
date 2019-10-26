@@ -4,12 +4,11 @@ namespace app\modules\admin\controllers;
 
 use app\models\Country;
 use app\models\Genre;
-use app\models\Producer;
 use app\modules\admin\models\CreateMovieForm;
+use app\modules\admin\models\SearchMovie;
 use app\modules\admin\models\UpdateMovieForm;
 use Yii;
 use app\models\Movie;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,11 +40,11 @@ class MovieController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Movie::find()->with('producer'),
-        ]);
+        $searchModel = new SearchMovie();
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

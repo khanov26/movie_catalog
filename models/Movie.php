@@ -98,7 +98,6 @@ class Movie extends ActiveRecord
             'age_rating' => 'Возраст',
             'plot' => 'Сюжет',
             'poster' => 'Постер',
-            'poster_small' => 'Poster Small',
             'imdb_rating' => 'Рейтинг Imdb',
         ];
     }
