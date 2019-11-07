@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Movie;
+use yii\bootstrap4\LinkPager;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -82,6 +83,15 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
                 ],
                 'template' => '{view}<br>{update}<br>{delete}',
             ],
+        ],
+        'pager' => [
+            'class' => LinkPager::class,
+            'options' => [
+                'class' => 'mt-4',
+            ],
+            'listOptions' => [
+                'class' => 'pagination justify-content-center',
+            ]
         ],
     ]) ?>
 </div>

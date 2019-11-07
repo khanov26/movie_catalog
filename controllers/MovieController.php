@@ -2,10 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\AdvancedSearchMovie;
+use app\models\Country;
+use app\models\Genre;
 use app\models\Movie;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -71,6 +75,89 @@ class MovieController extends Controller
 
         return $this->render('index', [
             'moviesArray' => $moviesArray,
+        ]);
+    }
+
+    public function actionSearchByName(string $term)
+    {
+        $movies = Movie::find()
+            ->where(['like', 'name', $term])
+            ->orWhere(['like', 'original_name', $term])
+            ->limit(10)
+            ->all();
+
+        $result = [];
+        /** @var Movie $movie */
+        foreach ($movies as $movie) {
+            $result[] = [
+                'name' => $movie->name,
+                'originalName' => $movie->original_name,
+                'poster' => $movie->getPoster(Movie::POSTER_SIZE_EXTRA_SMALL),
+                'year' => $movie->year,
+                'imdb' => $movie->imdb_rating,
+                'genre' => $movie->getGenres()->select('name')->limit(1)->scalar(),
+                'link' => Url::to(['/movie/view', 'id' => $movie->id]),
+            ];
+        }
+
+        return $this->asJson($result);
+    }
+
+    public function actionSearch()
+    {
+        $name = Yii::$app->request->post('headerSearchName');
+        $category = (int) Yii::$app->request->post('headerSearchCategory');
+
+        $query = Movie::find()
+            ->where(['like', 'name', $name])
+            ->orWhere(['like', 'original_name', $name]);
+
+        if (array_key_exists($category, Movie::CATEGORY_LABELS)) {
+            $query->andWhere(['category' => $category]);
+        } elseif ($category !== 0) {
+            throw new NotFoundHttpException('Указана не существующая категория');
+        }
+
+        $countQuery = clone $query;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => Yii::$app->params['moviesPerPage'],
+            'defaultPageSize' => Yii::$app->params['moviesPerPage'],
+        ]);
+
+        $movies = $query
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('list', [
+            'movies' => $movies,
+            'categoryLabel' => 'Результаты поиска',
+            'pages' => $pages,
+        ]);
+    }
+
+    public function actionAdvancedSearch()
+    {
+        $model = new AdvancedSearchMovie();
+        $dataProvider = $model->search(Yii::$app->request->get());
+        $countries = Country::find()->asArray()->all();
+        $ageRatings = Movie::find()
+            ->select('age_rating')
+            ->distinct()
+            ->orderBy(['age_rating' => SORT_ASC])
+            ->asArray()
+            ->all();
+        $genres = Genre::find()->asArray()->orderBy(['name' => SORT_ASC])->all();
+        $minYear = (int) Movie::find()->min('year');
+
+        return $this->render('advanced-search', [
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'countries'  => $countries,
+            'ageRatings' => $ageRatings,
+            'genres' => $genres,
+            'minYear' => $minYear,
         ]);
     }
 }

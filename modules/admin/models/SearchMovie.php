@@ -9,6 +9,9 @@ class SearchMovie extends Movie
 {
     /** @var string */
     public $producerName;
+
+    /** @var string */
+    public $country;
     /**
      * {@inheritDoc}
      */
@@ -17,9 +20,12 @@ class SearchMovie extends Movie
         return [
             ['id', 'integer'],
             [['name', 'original_name'], 'string', 'max' => 200],
+            ['producerName', 'trim'],
             ['producerName', 'string', 'max' => 100],
             ['year', 'date', 'format' => 'yyyy'],
             ['category', 'in', 'range' => array_keys(Movie::CATEGORY_LABELS)],
+            ['country', 'trim'],
+            ['country', 'string', 'max' => 100],
         ];
     }
 

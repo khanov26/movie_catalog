@@ -2,7 +2,7 @@ $(function () {
     $("#header-search-name")
         .autocomplete({
             minLength: 3,
-            source: '/search/search-by-name',
+            source: '/movie/search-by-name',
         })
         .autocomplete("instance")._renderItem = function (ul, item) {
         let link = $("<a>").attr("href", item.link)

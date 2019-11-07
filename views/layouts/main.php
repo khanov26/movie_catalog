@@ -46,7 +46,7 @@ AppAsset::register($this);
                         <?php endforeach; ?>
                     </ul>
 
-                    <?= Html::beginForm(['/search'], 'post', ['class' => 'form-inline my-2 my-lg-0']) ?>
+                    <?= Html::beginForm(['/movie/search'], 'post', ['class' => 'form-inline my-2 my-lg-0']) ?>
                         <div class="input-group">
                             <input id="header-search-name" class="form-control" name="headerSearchName" type="search" placeholder="Что ищем?" aria-label="Search">
                             <div class="input-group-append">

@@ -75,17 +75,6 @@ class Movie extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
-        return [
-            ['category', 'default', 'value' => self::CATEGORY_MOVIE],
-            ['category', 'in', 'range' => array_keys(self::CATEGORY_LABELS)],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -95,10 +84,11 @@ class Movie extends ActiveRecord
             'year' => 'Год выпуска',
             'producer_id' => 'Режиссер',
             'duration' => 'Продолжительность',
-            'age_rating' => 'Возраст',
+            'age_rating' => 'Возрастной рейтинг',
             'plot' => 'Сюжет',
             'poster' => 'Постер',
             'imdb_rating' => 'Рейтинг Imdb',
+            'category' => 'Категория',
         ];
     }
 
