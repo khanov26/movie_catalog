@@ -140,7 +140,7 @@ class MovieController extends Controller
     public function actionAdvancedSearch()
     {
         $model = new AdvancedSearchMovie();
-        $dataProvider = $model->search(Yii::$app->request->get());
+        $dataProvider = $model->search(Yii::$app->request->post());
         $countries = Country::find()->asArray()->all();
         $ageRatings = Movie::find()
             ->select('age_rating')

@@ -5,6 +5,8 @@ use yii\bootstrap4\LinkPager;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,7 +15,26 @@ use yii\grid\GridView;
 $this->title = 'Фильмы';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
+$this->registerJs('function getUrlParameter(url, param) {
+        let pattern = new RegExp(`${param}=([0-9]+)`);
+        let result = url.match(pattern);
+        if (result !== null) {
+            return result[1];
+        }
+        return null;
+    }
+
+    $(document).on("click", ".pagination a", function (event) {
+        event.preventDefault();
+        let page = getUrlParameter($(this).attr("href"), "page");
+        let form = $("#pagination-link-form");
+        let actionUrl = form.attr("action");
+        actionUrl += `?page=${page}`;
+        form.attr("action", actionUrl);
+        form.submit();
+    });');
 ?>
+
 <div class="movie-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -22,7 +43,20 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
         <?= Html::a('Новый фильм', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
+    <?php Pjax::begin([
+        'clientOptions' => ['method' => 'POST'],
+    ]); ?>
+    <?php
+        echo Html::beginForm(Url::to(['']), 'post', [
+            'id' => 'pagination-link-form',
+            'data-pjax' => '',
+            'style' => 'display: none',
+        ]);
+        foreach (Yii::$app->request->post('SearchMovie', []) as $name => $value) {
+            echo Html::hiddenInput("SearchMovie[$name]", $value);
+        }
+        echo Html::endForm();
+    ?>
     <?= GridView::widget([
         'filterModel' => $searchModel,
         'dataProvider' => $dataProvider,
@@ -94,4 +128,5 @@ $this->registerJsFile('https://kit.fontawesome.com/633a2100bb.js');
             ]
         ],
     ]) ?>
+    <?php Pjax::end(); ?>
 </div>

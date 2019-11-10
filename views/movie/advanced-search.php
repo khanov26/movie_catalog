@@ -12,17 +12,45 @@ use app\models\Movie;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\LinkPager;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\widgets\ListView;
+use yii\widgets\Pjax;
 
 $label = 'Расширенный поиск';
 $this->title = Yii::$app->name . ' - ' . $label;
 $this->params['breadcrumbs'][] = $label;
 
+$this->registerJs('function getUrlParameter(url, param) {
+        let pattern = new RegExp(`${param}=([0-9]+)`);
+        let result = url.match(pattern);
+        if (result !== null) {
+            return result[1];
+        }
+        return null;
+    }
+
+    $(document).on("click", ".pagination a", function (event) {
+        event.preventDefault();
+        let page = getUrlParameter($(this).attr("href"), "page");
+        let form = $("#advanced-search-form");
+        let actionUrl = form.attr("action");
+        actionUrl += `?page=${page}`;
+        form.attr("action", actionUrl);
+        form.submit();
+    });');
+
 ?>
+<?php Pjax::begin([
+    'clientOptions' => ['method' => 'POST'],
+]) ?>
 
 <?php $form = ActiveForm::begin([
-    'method' => 'get',
-    'options' => ['class' => 'row'],
+    'id' => 'advanced-search-form',
+    'action' => Url::to(['']),
+    'options' => [
+        'data-pjax' => '',
+        'class' => 'row',
+    ],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-md-8\">{input}\n{hint}\n{error}</div>",
         'labelOptions' => ['class' => 'col-md-4 control-label'],
@@ -124,3 +152,4 @@ $this->params['breadcrumbs'][] = $label;
         ]
     ],
 ]) ?>
+<?php Pjax::end(); ?>

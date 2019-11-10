@@ -41,7 +41,7 @@ class MovieController extends Controller
     public function actionIndex()
     {
         $searchModel = new SearchMovie();
-        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
